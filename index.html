@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f2f2c" />
+    <title>FlashBox Studio - Web Fotobooth</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">FlashBox Studio</p>
+          <h1>Fotobooth web siap pakai</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="ghost-button" id="installBtn" type="button" hidden>Install</button>
+          <button class="ghost-button" id="helpBtn" type="button">Panduan</button>
+        </div>
+      </header>
+
+      <main class="studio-grid">
+        <section class="preview-panel" aria-label="Area kamera">
+          <div class="camera-stage" id="cameraStage">
+            <video id="cameraFeed" autoplay playsinline muted></video>
+            <canvas id="captureCanvas" width="1440" height="1800" aria-hidden="true"></canvas>
+            <div class="live-overlay" id="liveOverlay">
+              <span class="overlay-tag" id="overlayEvent">FLASHBOX</span>
+              <span class="overlay-caption" id="overlayCaption">Ready to snap</span>
+            </div>
+            <div class="countdown" id="countdown" aria-live="polite"></div>
+            <div class="flash" id="flash"></div>
+            <div class="camera-message" id="cameraMessage">
+              <strong>Kamera belum aktif</strong>
+              <span>Tekan tombol mulai kamera untuk memberi akses webcam.</span>
+            </div>
+          </div>
+
+          <div class="capture-bar">
+            <button class="primary-button" id="startCameraBtn" type="button">Mulai kamera</button>
+            <button class="capture-button" id="captureBtn" type="button" disabled>
+              <span>Ambil foto</span>
+            </button>
+            <button class="ghost-button" id="switchCameraBtn" type="button" disabled>Ganti kamera</button>
+          </div>
+
+          <div class="filmstrip" id="shotStrip" aria-label="Foto mentah"></div>
+        </section>
+
+        <aside class="control-panel" aria-label="Kontrol fotobooth">
+          <section class="control-section">
+            <div class="section-heading">
+              <h2>Sesi</h2>
+              <span id="shotCounter">0/1 foto</span>
+            </div>
+            <div class="segmented" role="group" aria-label="Pilih layout">
+              <button class="is-active" type="button" data-layout="single">Single</button>
+              <button type="button" data-layout="strip3">Strip 3</button>
+              <button type="button" data-layout="grid4">Grid 4</button>
+              <button type="button" data-layout="postcard">Postcard</button>
+            </div>
+            <div class="field-grid two">
+              <label>
+                Timer
+                <select id="timerSelect">
+                  <option value="0">Tanpa timer</option>
+                  <option value="3" selected>3 detik</option>
+                  <option value="5">5 detik</option>
+                  <option value="10">10 detik</option>
+                </select>
+              </label>
+              <label>
+                Rasio kamera
+                <select id="ratioSelect">
+                  <option value="portrait" selected>Portrait</option>
+                  <option value="square">Square</option>
+                  <option value="wide">Wide</option>
+                </select>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <label class="switch">
+                <input id="mirrorToggle" type="checkbox" checked />
+                <span></span>
+                Mirror
+              </label>
+              <label class="switch">
+                <input id="soundToggle" type="checkbox" checked />
+                <span></span>
+                Suara
+              </label>
+            </div>
+          </section>
+
+          <section class="control-section">
+            <div class="section-heading">
+              <h2>Look</h2>
+              <span id="filterName">Clean</span>
+            </div>
+            <div class="filter-grid" id="filterGrid"></div>
+            <div class="field-grid two">
+              <label>
+                Frame
+                <select id="frameSelect">
+                  <option value="mint">Mint Pop</option>
+                  <option value="coral">Coral Ticket</option>
+                  <option value="ink">Ink Classic</option>
+                  <option value="sunrise">Sunrise Club</option>
+                </select>
+              </label>
+              <label>
+                Stiker
+                <select id="stickerSelect">
+                  <option value="none">Tanpa stiker</option>
+                  <option value="spark">Spark</option>
+                  <option value="bestie">Bestie</option>
+                  <option value="party">Party</option>
+                  <option value="stamp">Stamp</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <section class="control-section">
+            <div class="section-heading">
+              <h2>Teks</h2>
+              <span>Opsional</span>
+            </div>
+            <label>
+              Nama acara
+              <input id="eventInput" maxlength="28" value="FLASHBOX" />
+            </label>
+            <label>
+              Caption
+              <input id="captionInput" maxlength="42" value="Ready to snap" />
+            </label>
+            <div class="field-grid two">
+              <label>
+                Warna teks
+                <input id="textColorInput" type="color" value="#102421" />
+              </label>
+              <label>
+                Aksen
+                <input id="accentColorInput" type="color" value="#ff5a5f" />
+              </label>
+            </div>
+          </section>
+
+          <section class="control-section result-section">
+            <div class="section-heading">
+              <h2>Hasil</h2>
+              <span id="resultStatus">Belum ada</span>
+            </div>
+            <div class="result-preview" id="resultPreview">
+              <span>Hasil akhir muncul di sini</span>
+            </div>
+            <div class="action-grid">
+              <button id="downloadBtn" type="button" disabled>Download PNG</button>
+              <button id="printBtn" type="button" disabled>Print</button>
+              <button id="shareBtn" type="button" disabled>Share</button>
+              <button id="resetBtn" type="button">Reset sesi</button>
+            </div>
+          </section>
+        </aside>
+      </main>
+
+      <section class="gallery-panel" aria-label="Galeri hasil">
+        <div class="section-heading">
+          <h2>Galeri lokal</h2>
+          <span id="galleryCount">0 tersimpan</span>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+      </section>
+    </div>
+
+    <dialog id="helpDialog">
+      <form method="dialog">
+        <div class="modal-head">
+          <h2>Panduan cepat</h2>
+          <button class="icon-button" value="close" aria-label="Tutup">x</button>
+        </div>
+        <p>
+          Jalankan di localhost agar akses kamera aktif. Pilih layout, filter,
+          frame, dan timer, lalu ambil foto. Hasil bisa diunduh, dicetak,
+          dibagikan, dan otomatis masuk ke galeri lokal browser.
+        </p>
+        <ul>
+          <li>Shortcut: tekan Space untuk ambil foto.</li>
+          <li>Layout strip dan grid akan mengambil beberapa foto berurutan.</li>
+          <li>Galeri tersimpan di perangkat yang sama melalui localStorage.</li>
+        </ul>
+      </form>
+    </dialog>
+
+    <template id="galleryItemTemplate">
+      <article class="gallery-item">
+        <button class="gallery-thumb" type="button"></button>
+        <div>
+          <strong></strong>
+          <span></span>
+        </div>
+        <button class="delete-button" type="button">Hapus</button>
+      </article>
+    </template>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

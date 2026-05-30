@@ -1,0 +1,17 @@
+{
+  "name": "FlashBox Studio",
+  "short_name": "FlashBox",
+  "description": "Web fotobooth lengkap dengan filter, layout, frame, galeri lokal, download, dan print.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f4fbfa",
+  "theme_color": "#0f2f2c",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
